@@ -33,25 +33,7 @@ function App() {
           alt="TBox"
         />
         <div className="absolute inset-0 flex flex-col whitespace-pre-line font-pf text-gray-400 items-center justify-center mb-[135px] ml-[740px] text-xl">
-          I would recommend either the{" "}
-          <a
-            href="https://ferriswheelpress.ca/collections/the-bijou-fountain-pen-collection/products/the-bijou-fountain-pen-forget-me-not"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:underline font-semibold"
-          >
-            The Bijou Fountain Pen - Forget Me Not
-          </a>
-          or the{" "}
-          <a
-            href="https://ferriswheelpress.ca/collections/the-carousel-fountain-pens/products/the-carousel-fountain-pen-billowing-blush"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:underline font-semibold"
-          >
-            The Carousel Fountain Pen - Billowing Blush
-          </a>
-          as a gift for your mother!
+          Placeholder
         </div>
       </div>
       <div className="typing-box flex flex-row justify-center h-1/4 overflow-hidden">
