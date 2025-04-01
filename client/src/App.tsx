@@ -18,10 +18,15 @@ const MessageBox: React.FC<MessageBoxProps> = ({ message, isUser }) => {
   return (
     <div
       className={`p-4 rounded-lg shadow-md max-w-xs ${
-        isUser ? "bg-white self-end" : "bg-gray-100 self-start"
+        isUser ? "bg-blue-500 self-end" : "bg-gray-100 self-start"
       }`}
     >
-      {message}
+      {/* Render message as HTML, allowing links */}
+      <span
+        dangerouslySetInnerHTML={{
+          __html: message,
+        }}
+      />
     </div>
   );
 };
@@ -31,20 +36,46 @@ const App: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const handleSendClick = () => {
+  const fetchChatGPTResponse = async (userMessage: string) => {
+    const API_KEY =
+      "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"; // Replace with your API key
+    const API_URL = "https://api.openai.com/v1/chat/completions";
+
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo", // Using GPT-3.5 Turbo
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are an assistant focused only on providing information related to Ferris Wheel Press, such as products, history, and any relevant details about their offerings. Here's the website: https://ferriswheelpress.com/. If asked for recommendations, provide hyperlinked products best suited and make sure the product exists. Keep responses short.",
+          },
+          { role: "user", content: userMessage }, // User message
+        ],
+        max_tokens: 100,
+      }),
+    });
+
+    const data = await response.json();
+    console.log(data);
+    return data.choices[0]?.message?.content || "I didn't get that.";
+  };
+
+  const handleSendClick = async () => {
     if (textToSend.trim() !== "") {
-      const newMessage: Message = { text: textToSend, isUser: true };
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
+      const userMessage: Message = { text: textToSend, isUser: true };
+      setMessages((prevMessages) => [...prevMessages, userMessage]);
       setTextToSend("");
 
-      // Simulate a bot response after a short delay
-      setTimeout(() => {
-        const botResponse: Message = {
-          text: "This is a bot response",
-          isUser: false,
-        };
-        setMessages((prevMessages) => [...prevMessages, botResponse]);
-      }, 1000);
+      const botResponseText = await fetchChatGPTResponse(textToSend);
+      const botMessage: Message = { text: botResponseText, isUser: false };
+
+      setMessages((prevMessages) => [...prevMessages, botMessage]);
     }
   };
 
