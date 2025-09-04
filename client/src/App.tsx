@@ -38,7 +38,7 @@ const App: React.FC = () => {
 
   const fetchChatGPTResponse = async (userMessage: string) => {
     const API_KEY =
-      "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"; // Replace with your API key
+      "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";
     const API_URL = "https://api.openai.com/v1/chat/completions";
 
     const response = await fetch(API_URL, {
